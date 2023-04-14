@@ -18,6 +18,10 @@
 #define SKIADEFINES_H
 #include <QtGlobal>
 
+
+#define SK_GANESH
+#define SK_GL
+
 #ifdef QT_DEBUG
     #define GR_GL_CHECK_ERROR true
     #define GR_GL_LOG_CALLS true

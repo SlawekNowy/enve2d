@@ -38,7 +38,7 @@ endif()
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(PkgConfig)
@@ -792,6 +792,7 @@ target_link_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../skia/out/build
     ${QUAZIP_LIBRARIES_DIRS}
 )
+
 
 if(APPLE)
     target_link_directories(
