@@ -19,8 +19,8 @@
 #include <QtGlobal>
 
 
-#define SK_GANESH
-#define SK_GL
+//#define SK_GANESH
+//#define SK_GL
 
 #ifdef QT_DEBUG
     #define GR_GL_CHECK_ERROR true

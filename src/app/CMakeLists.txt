@@ -557,3 +557,21 @@ if(UNIX AND NOT APPLE)
         ${CMAKE_INSTALL_DOCDIR}-${PROJECT_VERSION}
     )
 endif()
+
+
+#skia defs
+target_compile_definitions(
+    ${PROJECT_NAME}
+    PRIVATE
+    SK_GANESH
+)
+target_compile_definitions(
+${PROJECT_NAME}
+PRIVATE
+SK_GL
+)
+target_compile_definitions(
+${PROJECT_NAME}
+PRIVATE
+SK_ENCODE_PNG
+)

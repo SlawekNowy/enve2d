@@ -794,6 +794,23 @@ target_link_directories(
 )
 
 
+#skia defs
+#TODO: consume defs programmatically
+target_compile_definitions(
+    ${PROJECT_NAME}
+    PRIVATE
+    SK_GANESH
+)
+target_compile_definitions(
+${PROJECT_NAME}
+PRIVATE
+SK_GL
+)
+target_compile_definitions(
+${PROJECT_NAME}
+PRIVATE
+SK_ENCODE_PNG
+)
 if(APPLE)
     target_link_directories(
         ${PROJECT_NAME}

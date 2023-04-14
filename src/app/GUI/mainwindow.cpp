@@ -708,6 +708,9 @@ void MainWindow::setupMenuBar()
     const auto filteringMenu = mViewMenu->addMenu(
                 tr("Filtering", "MenuBar_View"));
 
+
+    //REFACTOR THIS.
+
     mNoneQuality = filteringMenu->addAction(
                 tr("None", "MenuBar_View_Filtering"), [this]() {
         eFilterSettings::sSetDisplayFilter(kNone_SkFilterQuality);
@@ -763,6 +766,8 @@ void MainWindow::setupMenuBar()
     mHighQuality->setCheckable(true);
     mHighQuality->setChecked(eFilterSettings::sDisplay() == kHigh_SkFilterQuality &&
                              !eFilterSettings::sSmartDisplat());
+
+
 
     mDynamicQuality = filteringMenu->addAction(
                 tr("Dynamic", "MenuBar_View_Filtering"), [this]() {
