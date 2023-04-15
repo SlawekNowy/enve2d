@@ -4,6 +4,7 @@
 #include "Animators/eeffect.h"
 
 #include "Properties/boxtargetproperty.h"
+#include "skia/skcompatfilterquality.h"
 
 class PathBox;
 struct ChildRenderData;
@@ -37,7 +38,7 @@ public:
     virtual void detachedBlendSetup(const BoundingBox* const boxToDraw,
                                 const qreal relFrame,
                                 SkCanvas * const canvas,
-                                const SkFilterQuality filter,
+                                const CompatSkFilterQuality filter,
                                 const int drawId,
                                 QList<Delayed> &delayed) const = 0;
     virtual void drawBlendSetup(const qreal relFrame,

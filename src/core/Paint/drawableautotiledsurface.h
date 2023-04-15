@@ -39,23 +39,31 @@ public:
     void drawOnCanvas(SkCanvas * const canvas,
                       const SkPoint &dst,
                       const QRect * const minPixSrc,
+                      const SkSamplingOptions opts,
                       SkPaint * const paint) const;
+    void drawOnCanvas(SkCanvas * const canvas,
+                      const SkPoint &dst,
+                      const QRect * const minPixSrc,
+                      SkPaint * const paint)
+    {
+        drawOnCanvas(canvas,dst,minPixSrc,SkSamplingOptions(),paint);
+    }
 
     void drawOnCanvas(SkCanvas * const canvas,
                       const SkPoint &dst,
                       const QRect * const minPixSrc) const {
-        drawOnCanvas(canvas, dst, minPixSrc, nullptr);
+        drawOnCanvas(canvas, dst, minPixSrc,SkSamplingOptions(), nullptr);
     }
 
     void drawOnCanvas(SkCanvas * const canvas,
                       const SkPoint &dst) const {
-        drawOnCanvas(canvas, dst, nullptr, nullptr);
+        drawOnCanvas(canvas, dst, nullptr,SkSamplingOptions(), nullptr);
     }
 
     void drawOnCanvas(SkCanvas * const canvas,
                       const SkPoint &dst,
                       SkPaint * const paint) const {
-        drawOnCanvas(canvas, dst, nullptr, paint);
+        drawOnCanvas(canvas, dst, nullptr,SkSamplingOptions(), paint);
     }
 
     UndoableAutoTiledSurface &surface()

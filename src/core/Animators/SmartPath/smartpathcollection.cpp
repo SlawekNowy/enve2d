@@ -66,8 +66,7 @@ void SmartPathCollection::savePathsSVG(SvgExporter& exp,
                              [path0, &applier](const int relFrame) {
             auto path = path0->getPathAtRelFrame(relFrame);
             if(applier) applier(relFrame, path);
-            SkString pathStr;
-            SkParsePath::ToSVGString(path, &pathStr);
+            SkString pathStr = SkParsePath::ToSVGString(path);
             if(pathStr.isEmpty()) return QString("M0 0");
             return QString(pathStr.c_str());
         });
@@ -76,8 +75,7 @@ void SmartPathCollection::savePathsSVG(SvgExporter& exp,
                           [this, &applier](const int relFrame) {
             auto path = getPathAtRelFrame(relFrame);
             if(applier) applier(relFrame, path);
-            SkString pathStr;
-            SkParsePath::ToSVGString(path, &pathStr);
+            SkString pathStr = SkParsePath::ToSVGString(path);
             if(pathStr.isEmpty()) return QString("M0 0");
             return QString(pathStr.c_str());
         }, "discrete", extInfl);

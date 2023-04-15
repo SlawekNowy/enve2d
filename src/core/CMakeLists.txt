@@ -41,6 +41,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(OpenGL)
 find_package(PkgConfig)
 find_package(OpenMP)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
@@ -406,6 +407,7 @@ set(
     wrappedint.cpp
     zipfileloader.cpp
     zipfilesaver.cpp
+    skia/skcompatfilterquality.cpp
 )
 
 set(
@@ -762,6 +764,7 @@ set(
     wrappedint.h
     zipfileloader.h
     zipfilesaver.h
+    skia/skcompatfilterquality.h
 )
 
 add_library(
@@ -819,9 +822,22 @@ if(APPLE)
     )
 endif()
 
+
+if(UNIX AND NOT APPLE)
+    target_link_libraries(
+        ${PROJECT_NAME}
+        PRIVATE
+        OpenGL::GLX)
+else()
+    target_link_libraries(
+        ${PROJECT_NAME}
+        PRIVATE
+        OpenGL::GL)
+endif()
 target_link_libraries(
     ${PROJECT_NAME}
     PRIVATE
+    fontconfig
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Concurrent
@@ -839,7 +855,8 @@ target_link_libraries(
     ${SWSCALE_LIBRARIES}
     ${SWRESAMPLE_LIBRARIES}
     skia
-    fontconfig
+    sksg
+
 )
 
 if(OpenMP_CXX_FOUND)

@@ -56,6 +56,7 @@ if(APPLE)
     set(CMAKE_INSTALL_RPATH "@executable_path/../Frameworks")
 endif()
 
+find_package(OpenGL)
 find_package(PkgConfig)
 find_package(OpenMP)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
@@ -90,6 +91,7 @@ pkg_check_modules(AVCODEC REQUIRED libavcodec)
 pkg_check_modules(AVUTIL REQUIRED libavutil)
 pkg_check_modules(SWSCALE REQUIRED libswscale)
 pkg_check_modules(SWRESAMPLE REQUIRED libswresample)
+
 if(UNIX AND NOT ${SHARED_TCMALLOC})
     if(NOT APPLE)
         pkg_check_modules(UNWIND REQUIRED libunwind)
@@ -447,10 +449,24 @@ if(UNIX)
     )
 endif()
 
+#TODO: Use OpenGL::GL or GLX instead
+#
+
+if(UNIX AND NOT APPLE)
+    target_link_libraries(
+        ${PROJECT_NAME}
+        PRIVATE
+        OpenGL::GLX)
+else()
+    target_link_libraries(
+        ${PROJECT_NAME}
+        PRIVATE
+        OpenGL::GL)
+endif()
 target_link_libraries(
     ${PROJECT_NAME}
     PRIVATE
-    ${PROJECT_NAME}core
+    fontconfig
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Concurrent
@@ -468,7 +484,12 @@ target_link_libraries(
     ${AVUTIL_LIBRARIES}
     ${SWSCALE_LIBRARIES}
     ${SWRESAMPLE_LIBRARIES}
+    sksg
     skia
+    ${PROJECT_NAME}core
+
+
+
 )
 
 if(OpenMP_CXX_FOUND)

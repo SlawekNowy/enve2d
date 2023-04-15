@@ -17,6 +17,7 @@
 #ifndef BOXRENDERDATA_H
 #define BOXRENDERDATA_H
 #include "skia/skiaincludes.h"
+#include "skia/skcompatfilterquality.h"
 
 #include <QWeakPointer>
 #include "Tasks/updatable.h"
@@ -102,7 +103,7 @@ public:
     // for motion blur
 
     SkBlendMode fBlendMode = SkBlendMode::kSrcOver;
-    const SkFilterQuality fFilterQuality;
+    const CompatSkFilterQuality fFilterQuality;
     bool fAntiAlias = false;
     bool fUseRenderTransform = false;
 

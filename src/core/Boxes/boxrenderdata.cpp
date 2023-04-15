@@ -69,12 +69,17 @@ sk_sp<SkImage> BoxRenderData::requestImageCopy() {
 
 void BoxRenderData::drawOnParentLayer(SkCanvas * const canvas) {
     SkPaint paint;
-    if(fUseRenderTransform) paint.setFilterQuality(fFilterQuality);
+
     drawOnParentLayer(canvas, paint);
 }
 
 void BoxRenderData::drawOnParentLayer(SkCanvas * const canvas,
                                       SkPaint& paint) {
+    SkSamplingOptions opts;
+    if(fUseRenderTransform){
+        opts = SkiaHelpers::SkFQtoSamplingOpts(fFilterQuality);
+        //paint.setFilterQuality(fFilterQuality);
+    }
     if(isZero4Dec(fOpacity) || !fRenderedImage) return;
     if(fUseRenderTransform) canvas->concat(toSkMatrix(fRenderTransform));
     if(fBlendMode == SkBlendMode::kDstIn ||
@@ -94,7 +99,7 @@ void BoxRenderData::drawOnParentLayer(SkCanvas * const canvas,
     paint.setAlpha(static_cast<U8CPU>(qRound(fOpacity*2.55)));
     paint.setBlendMode(fBlendMode);
     paint.setAntiAlias(fAntiAlias);
-    canvas->drawImage(fRenderedImage, fGlobalRect.x(), fGlobalRect.y(), &paint);
+    canvas->drawImage(fRenderedImage, fGlobalRect.x(), fGlobalRect.y(),opts, &paint);
 }
 
 void BoxRenderData::processGpu(QGL33 * const gl,

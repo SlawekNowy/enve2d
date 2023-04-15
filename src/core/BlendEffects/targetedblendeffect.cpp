@@ -74,7 +74,7 @@ void TargetedBlendEffect::detachedBlendSetup(
         const BoundingBox* const boxToDraw,
         const qreal relFrame,
         SkCanvas * const canvas,
-        const SkFilterQuality filter,
+        const CompatSkFilterQuality filter,
         const int drawId,
         QList<Delayed> &delayed) const {
     Q_UNUSED(drawId)

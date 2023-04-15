@@ -103,7 +103,7 @@ void setupPaint(OraElement& element, SkPaint& paint) {
 void drawLayerPNG(OraLayerPNG_Sk& layer, SkCanvas& canvas) {
     SkPaint paint;
     setupPaint(layer, paint);
-    canvas.drawImage(layer.fImage, layer.fX, layer.fY, &paint);
+    canvas.drawImage(layer.fImage, layer.fX, layer.fY,SkiaHelpers::SkFQtoSamplingOpts(CompatSkFilterQuality::SK_HIGH), &paint);
 }
 
 void drawLayerSVG(OraLayerSVG& layer, SkCanvas& canvas) {
@@ -117,7 +117,7 @@ void drawLayerSVG(OraLayerSVG& layer, SkCanvas& canvas) {
     renderer.render(&p);
     p.end();
 
-    canvas.drawImage(toSkImage(qImg), layer.fX, layer.fY, &paint);
+    canvas.drawImage(toSkImage(qImg), layer.fX, layer.fY,SkiaHelpers::SkFQtoSamplingOpts(CompatSkFilterQuality::SK_HIGH), &paint);
 }
 
 void drawStack(OraStack_Sk& stack, SkCanvas& canvas) {

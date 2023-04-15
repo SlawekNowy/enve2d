@@ -49,11 +49,11 @@ void ImageRenderData::setupDirectDraw() {
 void ImageRenderData::drawSk(SkCanvas * const canvas) {
     const float x = static_cast<float>(fRelBoundingRect.x());
     const float y = static_cast<float>(fRelBoundingRect.y());
-    if(fFilterQuality > kNone_SkFilterQuality) {
+    if(fFilterQuality > CompatSkFilterQuality::SK_NONE) {
         SkPaint paint;
         paint.setAntiAlias(true);
-        paint.setFilterQuality(fFilterQuality);
-        canvas->drawImage(fImage, x, y, &paint);
+        //paint.setFilterQuality(fFilterQuality);
+        canvas->drawImage(fImage,x,y,SkiaHelpers::SkFQtoSamplingOpts(fFilterQuality),&paint);
     } else if(fImage) canvas->drawImage(fImage, x, y);
 }
 

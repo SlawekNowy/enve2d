@@ -22,6 +22,7 @@
 #include "smartPointers/ememory.h"
 #include "framerange.h"
 
+#include "skia/skcompatfilterquality.h"
 struct BoxRenderData;
 
 class CORE_EXPORT RenderContainer {
@@ -29,7 +30,7 @@ public:
     RenderContainer() {}
 
     void drawSk(SkCanvas * const canvas,
-                const SkFilterQuality filter) const;
+                const CompatSkFilterQuality filter) const;
 
     void updatePaintTransformGivenNewTotalTransform(
             const QMatrix &totalTransform);

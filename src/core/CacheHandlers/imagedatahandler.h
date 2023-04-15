@@ -18,6 +18,7 @@
 #define IMAGEDATAHANDLER_H
 
 #include "skia/skiaincludes.h"
+#include "skia/skcompatfilterquality.h"
 #include "../core_global.h"
 
 #include <QList>
@@ -33,7 +34,7 @@ public:
     int getImageByteCount() const;
 
     void drawImage(SkCanvas * const canvas,
-                   const SkFilterQuality filter) const;
+                   const CompatSkFilterQuality filter) const;
 
     bool hasImage() const { return mImage.get(); }
     const sk_sp<SkImage>& getImage() const;

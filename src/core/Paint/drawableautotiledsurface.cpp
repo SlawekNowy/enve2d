@@ -16,6 +16,7 @@
 
 #include "drawableautotiledsurface.h"
 #include "skia/skiahelpers.h"
+#include "skia/skcompatfilterquality.h"
 
 DrawableAutoTiledSurface::DrawableAutoTiledSurface() :
     mRowCount(mTileBitmaps.fRowCount),
@@ -44,6 +45,7 @@ DrawableAutoTiledSurface &DrawableAutoTiledSurface::operator=(
 void DrawableAutoTiledSurface::drawOnCanvas(SkCanvas * const canvas,
                                             const SkPoint &dst,
                                             const QRect * const minPixSrc,
+                                            const SkSamplingOptions opts,
                                             SkPaint * const paint) const {
     const QRect maxRect = tileBoundingRect();
     QRect tileRect;
@@ -58,7 +60,7 @@ void DrawableAutoTiledSurface::drawOnCanvas(SkCanvas * const canvas,
             const auto btmp = bitmapForTile(tx, ty);
             if(btmp.isNull()) continue;
             const float drawY = dst.y() + ty*TILE_SIZE;
-            canvas->drawBitmap(btmp, drawX, drawY, paint);
+            canvas->drawImage(btmp.asImage(), drawX, drawY,opts, paint);
         }
     }
 }

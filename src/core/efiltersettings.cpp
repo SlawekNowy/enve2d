@@ -23,13 +23,13 @@ eFilterSettings::eFilterSettings() {
     sInstance = this;
 }
 
-void eFilterSettings::setEnveRenderFilter(const SkFilterQuality filter) {
+void eFilterSettings::setEnveRenderFilter(const CompatSkFilterQuality filter) {
     if(filter == mEnveRender) return;
     mEnveRender = filter;
     updateRenderFilter();
 }
 
-void eFilterSettings::setOutputRenderFilter(const SkFilterQuality filter) {
+void eFilterSettings::setOutputRenderFilter(const CompatSkFilterQuality filter) {
     if(filter == mOutputRender) return;
     mOutputRender = filter;
     updateRenderFilter();

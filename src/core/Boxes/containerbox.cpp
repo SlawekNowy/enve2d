@@ -784,7 +784,7 @@ void handleDelayed(QList<BlendEffect::Delayed> &delayed,
 }
 
 void ContainerBox::drawContained(SkCanvas * const canvas,
-                                 const SkFilterQuality filter, int& drawId,
+                                 const CompatSkFilterQuality filter, int& drawId,
                                  QList<BlendEffect::Delayed> &delayed) const {
     if(mContainedBoxes.isEmpty()) return;
     handleDelayed(delayed, drawId, nullptr, mContainedBoxes.last());
@@ -884,7 +884,7 @@ void ContainerBox::updateUIElementsForBlendEffects() {
 
 void ContainerBox::containedDetachedBlendSetup(
         SkCanvas * const canvas,
-        const SkFilterQuality filter, int& drawId,
+        const CompatSkFilterQuality filter, int& drawId,
         QList<BlendEffect::Delayed> &delayed) const {
     for(int i = mContainedBoxes.count() - 1; i >= 0; i--) {
         const auto& box = mContainedBoxes.at(i);
@@ -901,7 +901,7 @@ void ContainerBox::containedDetachedBlendSetup(
 }
 
 void ContainerBox::drawContained(SkCanvas * const canvas,
-                                 const SkFilterQuality filter) const {
+                                 const CompatSkFilterQuality filter) const {
     int drawId = 0;
     QList<BlendEffect::Delayed> delayed;
     containedDetachedBlendSetup(canvas, filter, drawId, delayed);
@@ -911,7 +911,7 @@ void ContainerBox::drawContained(SkCanvas * const canvas,
 }
 
 void ContainerBox::drawPixmapSk(SkCanvas * const canvas,
-                                const SkFilterQuality filter, int& drawId,
+                                const CompatSkFilterQuality filter, int& drawId,
                                 QList<BlendEffect::Delayed> &delayed) const {
     if(isGroup()) return drawContained(canvas, filter, drawId, delayed);
     if(mIsDescendantCurrentGroup) {

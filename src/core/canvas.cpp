@@ -219,7 +219,7 @@ void drawTransparencyMesh(SkCanvas* const canvas,
     const float dim = eSizesUI::widget*0.5f / (scale > 1.f ? 1.f : scale);
     matr.setScale(dim, dim);
     const auto shader = bitmap.makeShader(SkTileMode::kRepeat,
-                                          SkTileMode::kRepeat, &matr);
+                                          SkTileMode::kRepeat,SkiaHelpers::SkFQtoSamplingOpts(CompatSkFilterQuality::SK_HIGH), &matr);
     paint.setShader(shader);
     paint.setColor(SkColorSetARGB(255, 100, 100, 100));
     canvas->drawRect(drawRect, paint);

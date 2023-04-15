@@ -37,8 +37,8 @@ OilTrace::OilTrace(const SkPoint& startingPosition, unsigned int nSteps, float s
 
 	for (unsigned int i = 1; i < nSteps; ++i) {
         float ang = initAng + 2*PI * (ofNoise(noiseSeed + NOISE_FACTOR * i) - 0.5);
-        positions.emplace_back(SkPoint{positions[i - 1].x() + speed * cos(ang),
-                                       positions[i - 1].y() + speed * sin(ang)});
+        positions.emplace_back(SkPoint{SkDoubleToScalar(positions[i - 1].x() + speed * cos(ang)),
+                                       SkDoubleToScalar(positions[i - 1].y() + speed * sin(ang))});
 		alphas.push_back(255 - alphaDecrement * i);
 	}
 

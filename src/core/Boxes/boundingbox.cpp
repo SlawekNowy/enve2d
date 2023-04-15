@@ -291,7 +291,7 @@ NormalSegment BoundingBox::getNormalSegment(const QPointF &absPos,
 #include "efiltersettings.h"
 
 void BoundingBox::drawPixmapSk(SkCanvas * const canvas,
-                               const SkFilterQuality filter) const {
+                               const CompatSkFilterQuality filter) const {
     const qreal opacity = getOpacity(anim_getCurrentRelFrame());
     if(isZero4Dec(opacity) || !mVisibleInScene) return;
     mDrawRenderContainer.drawSk(canvas, filter);
@@ -341,7 +341,7 @@ void BoundingBox::detachedBlendUISetup(int& drawId,
 
 void BoundingBox::detachedBlendSetup(
         SkCanvas * const canvas,
-        const SkFilterQuality filter, int& drawId,
+        const CompatSkFilterQuality filter, int& drawId,
         QList<BlendEffect::Delayed> &delayed) const {
     if(!blendEffectsEnabled()) return;
     mBlendEffectCollection->detachedBlendSetup(
@@ -349,7 +349,7 @@ void BoundingBox::detachedBlendSetup(
 }
 
 void BoundingBox::drawPixmapSk(SkCanvas * const canvas,
-                               const SkFilterQuality filter, int& drawId,
+                               const CompatSkFilterQuality filter, int& drawId,
                                QList<BlendEffect::Delayed> &delayed) const {
     Q_UNUSED(drawId)
     Q_UNUSED(delayed)

@@ -18,28 +18,19 @@
 #define EFILTERSETTINGS_H
 
 
-/**
- *  Controls how much filtering to be done when scaling/transforming complex colors
- *  e.g. images.
-    These values are persisted to logs. Entries should not be renumbered and
-    numeric values should never be reused.
-    LONG SINCE REMOVED, use this for SkSamplingOptions presets
 
 
-enum SkFilterQuality {
-    kNone_SkFilterQuality   = 0,    //!< nearest-neighbor; fastest but lowest quality
-    kLow_SkFilterQuality    = 1,    //!< bilerp
-    kMedium_SkFilterQuality = 2,    //!< bilerp + mipmaps; good for down-scaling
-    kHigh_SkFilterQuality   = 3,    //!< bicubic resampling; slowest but good quality
-    kLast_SkFilterQuality = kHigh_SkFilterQuality,
-};
- */
+
 
 #include <QObject>
 
 #include "core_global.h"
 #include "skia/skiaincludes.h"
+#include "skia/skcompatfilterquality.h"
 #include "simplemath.h"
+
+
+
 
 class CORE_EXPORT eFilterSettings : public QObject {
     Q_OBJECT
@@ -48,15 +39,15 @@ public:
 
     static eFilterSettings* sInstance;
 
-    static void sSetEnveRenderFilter(const SkFilterQuality filter) {
+    static void sSetEnveRenderFilter(const CompatSkFilterQuality filter) {
         sInstance->setEnveRenderFilter(filter);
     }
 
-    static void sSetOutputRenderFilter(const SkFilterQuality filter) {
+    static void sSetOutputRenderFilter(const CompatSkFilterQuality filter) {
         sInstance->setOutputRenderFilter(filter);
     }
 
-    static void sSetDisplayFilter(const SkFilterQuality filter) {
+    static void sSetDisplayFilter(const CompatSkFilterQuality filter) {
         sSetSmartDisplay(false);
         sInstance->mDisplayFilter = filter;
     }
@@ -65,11 +56,11 @@ public:
         sInstance->mSmartDisplay = smart;
     }
 
-    static SkFilterQuality sRender() {
+    static CompatSkFilterQuality sRender() {
         return sInstance->mRender;
     }
 
-    static SkFilterQuality sDisplay() {
+    static CompatSkFilterQuality sDisplay() {
         return sInstance->mDisplayFilter;
     }
 
@@ -77,14 +68,14 @@ public:
         return sInstance->mSmartDisplay;
     }
 
-    static SkFilterQuality sDisplay(const qreal zoom,
+    static CompatSkFilterQuality sDisplay(const qreal zoom,
                                     const qreal resolution) {
         if(sInstance->mSmartDisplay) {
             const qreal scale = zoom/resolution;
-            if(isOne4Dec(scale)) return kNone_SkFilterQuality;
-            else if(scale > 2.5) return kNone_SkFilterQuality;
-            else if(scale < 0.5) return kMedium_SkFilterQuality;
-            return kLow_SkFilterQuality;
+            if(isOne4Dec(scale)) return CompatSkFilterQuality::SK_NONE;
+            else if(scale > 2.5) return CompatSkFilterQuality::SK_NONE;
+            else if(scale < 0.5) return CompatSkFilterQuality::SK_MEDIUM;
+            return CompatSkFilterQuality::SK_LOW;
         } else return sDisplay();
     }
 
@@ -98,13 +89,13 @@ public:
         sInstance->updateRenderFilter();
     }
 
-    void setEnveRenderFilter(const SkFilterQuality filter);
-    void setOutputRenderFilter(const SkFilterQuality filter);
+    void setEnveRenderFilter(const CompatSkFilterQuality filter);
+    void setOutputRenderFilter(const CompatSkFilterQuality filter);
 signals:
-    void renderFilterChanged(const SkFilterQuality filter);
+    void renderFilterChanged(const CompatSkFilterQuality filter);
 private:
     void updateRenderFilter() {
-        SkFilterQuality newFilter;
+        CompatSkFilterQuality newFilter;
         if(mCurrentRender == RenderFilter::enve) newFilter = mEnveRender;
         else newFilter = mOutputRender;
         if(newFilter == mRender) return;
@@ -112,15 +103,15 @@ private:
         emit renderFilterChanged(newFilter);
     }
 
-    SkFilterQuality mEnveRender = SkFilterQuality::kHigh_SkFilterQuality;
-    SkFilterQuality mOutputRender = SkFilterQuality::kHigh_SkFilterQuality;
+    CompatSkFilterQuality mEnveRender = CompatSkFilterQuality::SK_HIGH;
+    CompatSkFilterQuality mOutputRender = CompatSkFilterQuality::SK_HIGH;
 
     enum class RenderFilter { enve, output };
     RenderFilter mCurrentRender = RenderFilter::enve;
-    SkFilterQuality mRender = mEnveRender;
+    CompatSkFilterQuality mRender = mEnveRender;
 
     bool mSmartDisplay = true;
-    SkFilterQuality mDisplayFilter = SkFilterQuality::kNone_SkFilterQuality;
+    CompatSkFilterQuality mDisplayFilter = CompatSkFilterQuality::SK_HIGH;
 };
 
 #endif // EFILTERSETTINGS_H

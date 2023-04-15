@@ -35,7 +35,7 @@ public:
     void detachedBlendSetup(const BoundingBox* const boxToDraw,
                         const qreal relFrame,
                         SkCanvas * const canvas,
-                        const SkFilterQuality filter,
+                        const CompatSkFilterQuality filter,
                         const int drawId,
                         QList<Delayed> &delayed) const;
     void drawBlendSetup(const qreal relFrame,

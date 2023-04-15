@@ -270,13 +270,13 @@ void OutputSettingsDialog::addVideoCodec(const AVCodec* const codec,
 void OutputSettingsDialog::addAudioCodec(const AVCodecID &codecId,
                                          const AVOutputFormat *outputFormat,
                                          const QString &currentCodecName) {
-    AVCodec * const currentCodec = avcodec_find_encoder(codecId);
+    const AVCodec* currentCodec = avcodec_find_encoder(codecId);
     if(!currentCodec) return;
     if(currentCodec->type != AVMEDIA_TYPE_AUDIO) return;
     if(currentCodec->capabilities & AV_CODEC_CAP_EXPERIMENTAL) return;
     if(currentCodec->sample_fmts == nullptr) return;
     if(avformat_query_codec(outputFormat, codecId, COMPLIENCE) == 0) return;
-    mAudioCodecsList << currentCodec;
+    mAudioCodecsList.append(const_cast<AVCodec*>(currentCodec));
     const QString codecName(currentCodec->long_name);
     mAudioCodecsComboBox->addItem(codecName);
     if(codecName == currentCodecName) {
@@ -317,7 +317,7 @@ void OutputSettingsDialog::updateAvailableVideoCodecs() {
         const FormatCodecs currFormatT =
                 mSupportedFormats.at(outputFormatId);
         for(const AVCodecID &codecId : currFormatT.mVidCodecs) {
-            AVCodec * const iCodec = avcodec_find_encoder(codecId);
+            const AVCodec *  iCodec = avcodec_find_encoder(codecId);
             if(!iCodec) break;
             if(iCodec->type != AVMEDIA_TYPE_VIDEO) continue;
             if(iCodec->capabilities & AV_CODEC_CAP_EXPERIMENTAL) {
@@ -362,7 +362,7 @@ void OutputSettingsDialog::updateAvailableAudioCodecs() {
         const FormatCodecs currFormatT =
                 mSupportedFormats.at(outputFormatId);
         for(const AVCodecID &codecId : currFormatT.mAudioCodecs) {
-            AVCodec * const currentCodec = avcodec_find_encoder(codecId);
+            const AVCodec *  currentCodec = avcodec_find_encoder(codecId);
             if(!currentCodec) break;
             if(currentCodec->type != AVMEDIA_TYPE_AUDIO) continue;
             if(currentCodec->capabilities & AV_CODEC_CAP_EXPERIMENTAL) {
@@ -486,7 +486,12 @@ void OutputSettingsDialog::updateAvailableAudioBitrates() {
         currentCodec = mAudioCodecsList.at(codecId);
     }
     if(!currentCodec) return;
-    if(currentCodec->capabilities & AV_CODEC_CAP_LOSSLESS) {
+    //TODO:Version check.
+    //AV_CODEC_CAP_LOSSLESS is deprecated since 2020, and has ben since removed.
+    //In order to check if codec is lossless we have to allocate context now.
+    AVCodecContext * context = avcodec_alloc_context3(currentCodec);
+
+    if(context->properties & FF_CODEC_PROPERTY_LOSSLESS) {
         mAudioBitrateComboBox->addItem("Loseless", QVariant(384000));
     } else {
         QList<int> rates = { 24, 32, 48, 64, 128, 160, 192, 320, 384 };
@@ -495,6 +500,7 @@ void OutputSettingsDialog::updateAvailableAudioBitrates() {
                                            QVariant(rate*1000));
         }
     }
+    avcodec_free_context(&context);
 
     bool set = false;
     if(lastSet.isValid()) {

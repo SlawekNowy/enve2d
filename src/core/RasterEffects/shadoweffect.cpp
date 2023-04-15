@@ -139,7 +139,7 @@ void ShadowEffectCaller::processGpu(QGL33 * const gl,
 
     SkPaint paint;
     setupPaint(paint);
-    canvas->drawImage(srcTex, mTranslation.x(), -mTranslation.y(), &paint);
+    canvas->drawImage(srcTex, mTranslation.x(), -mTranslation.y(),SkiaHelpers::SkFQtoSamplingOpts(CompatSkFilterQuality::SK_HIGH), &paint);
     canvas->drawImage(srcTex, 0, 0);
     canvas->flush();
 
@@ -169,8 +169,8 @@ void ShadowEffectCaller::processCpu(CpuRenderTools &renderTools,
 
         SkPaint paint;
         setupPaint(paint);
-        canvas.drawBitmap(tileSrc, mTranslation.x() + drawX,
-                          mTranslation.y() + drawY, &paint);
-        canvas.drawBitmap(tileSrc, drawX, drawY);
+        canvas.drawImage(tileSrc.asImage(), mTranslation.x() + drawX,
+                          mTranslation.y() + drawY,SkiaHelpers::SkFQtoSamplingOpts(CompatSkFilterQuality::SK_HIGH), &paint);
+        canvas.drawImage(tileSrc.asImage(), drawX, drawY);
     }
 }

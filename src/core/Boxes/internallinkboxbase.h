@@ -61,7 +61,7 @@ public:
                     QList<ChildRenderData>& delayed) const override;
     void detachedBlendSetup(
             SkCanvas * const canvas,
-            const SkFilterQuality filter, int& drawId,
+            const CompatSkFilterQuality filter, int& drawId,
             QList<BlendEffect::Delayed> &delayed) const override;
 
     void saveSVG(SvgExporter& exp, DomEleTask* const task) const override;
@@ -264,7 +264,7 @@ void ILBB::blendSetup(ChildRenderData& data,
 template <typename BoxT>
 void ILBB::detachedBlendSetup(
         SkCanvas * const canvas,
-        const SkFilterQuality filter, int& drawId,
+        const CompatSkFilterQuality filter, int& drawId,
         QList<BlendEffect::Delayed> &delayed) const {
     if(mInnerLink) {
         const auto linkTarget = getLinkTarget();

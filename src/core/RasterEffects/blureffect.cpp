@@ -85,16 +85,17 @@ void BlurEffectCaller::processGpu(QGL33 * const gl,
     Q_UNUSED(gl)
 
     const float sigma = mRadius*0.3333333f;
-    const auto filter = SkBlurImageFilter::Make(sigma, sigma, nullptr);
+    const auto filter = sksg::BlurImageFilter::Make();
+    filter->setSigma(SkVector{sigma,sigma});
 
     SkPaint paint;
-    paint.setImageFilter(filter);
+    paint.setImageFilter(filter->getFilter());
 
     renderTools.switchToSkia();
     const auto canvas = renderTools.requestTargetCanvas();
     canvas->clear(SK_ColorTRANSPARENT);
     const auto srcTex = renderTools.requestSrcTextureImageWrapper();
-    canvas->drawImage(srcTex, 0, 0, &paint);
+    canvas->drawImage(srcTex, 0, 0,SkiaHelpers::SkFQtoSamplingOpts(CompatSkFilterQuality::SK_HIGH), &paint);
     canvas->flush();
 
     renderTools.swapTextures();
@@ -105,10 +106,11 @@ void BlurEffectCaller::processCpu(CpuRenderTools &renderTools,
     Q_UNUSED(data)
 
     const float sigma = mRadius*0.3333333f;
-    const auto filter = SkBlurImageFilter::Make(sigma, sigma, nullptr);
+    const auto filter = sksg::BlurImageFilter::Make();
+    filter->setSigma(SkVector{sigma,sigma});
 
     SkPaint paint;
-    paint.setImageFilter(filter);
+    paint.setImageFilter(filter->getFilter());
 
     SkCanvas canvas(renderTools.fDstBtmp);
     canvas.clear(SK_ColorTRANSPARENT);
@@ -122,6 +124,6 @@ void BlurEffectCaller::processCpu(CpuRenderTools &renderTools,
         srcBtmp.extractSubset(&tileSrc, srcRect);
         const int drawX = srcRect.left() - texTile.left();
         const int drawY = srcRect.top() - texTile.top();
-        canvas.drawBitmap(tileSrc, drawX, drawY, &paint);
+        canvas.drawImage(tileSrc.asImage(), drawX, drawY,SkiaHelpers::SkFQtoSamplingOpts(CompatSkFilterQuality::SK_HIGH), &paint);
     }
 }

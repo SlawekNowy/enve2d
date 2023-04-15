@@ -41,6 +41,8 @@ QT_WARNING_DISABLE_GCC("-Wattributes")
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkFontMetrics.h"
 
+#include "include/codec/SkEncodedImageFormat.h"
+
 #include "include/pathops/SkPathOps.h"
 
 //#include "include/utils/SkRandom.h"
@@ -68,6 +70,7 @@ QT_WARNING_DISABLE_GCC("-Wattributes")
 
 #include "src/core/SkStroke.h"
 #include "src/core/SkGeometry.h" // for SkAutoConicToQuads
+
 
 QT_WARNING_POP
 

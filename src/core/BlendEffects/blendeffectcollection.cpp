@@ -66,7 +66,7 @@ void BlendEffectCollection::detachedBlendUISetup(
 void BlendEffectCollection::detachedBlendSetup(
         const BoundingBox* const boxToDraw,
         SkCanvas * const canvas,
-        const SkFilterQuality filter, int &drawId,
+        const CompatSkFilterQuality filter, int &drawId,
         QList<BlendEffect::Delayed> &delayed) const {
     const qreal relFrame = anim_getCurrentRelFrame();
     const int iMax = ca_getNumberOfChildren();

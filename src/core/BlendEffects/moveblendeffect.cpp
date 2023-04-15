@@ -70,7 +70,7 @@ void MoveBlendEffect::detachedBlendUISetup(
 void MoveBlendEffect::detachedBlendSetup(const BoundingBox* const boxToDraw,
                                          const qreal relFrame,
                                          SkCanvas * const canvas,
-                                         const SkFilterQuality filter,
+                                         const CompatSkFilterQuality filter,
                                          const int drawId,
                                          QList<Delayed> &delayed) const {
     const int dIndex = calcDIndex(relFrame);
